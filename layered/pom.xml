@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>architectures</artifactId>
+        <groupId>fr.xebia</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <javax.inject>1</javax.inject>
+        <javax.validation.api.version>2.0.0.Final</javax.validation.api.version>
+        <javax.persistence.api>1.0.2</javax.persistence.api>
+        <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
+        <apache.commons.lang.version>3.6</apache.commons.lang.version>
+    </properties>
+
+    <groupId>fr.xebia.architectures</groupId>
+    <artifactId>layered</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>layered-persistence</module>
+        <module>layered-business</module>
+        <module>layered-presentation</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${javax.inject}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${javax.validation.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${javax.persistence.api}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
