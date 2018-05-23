@@ -1,18 +1,18 @@
 package fr.xebia.architectures.hexagonal.domain.service;
 
-import fr.xebia.architectures.hexagonal.domain.provider.CurrencyProvider;
+import fr.xebia.architectures.hexagonal.domain.provider.service.CurrencyServiceProvider;
 import java.util.Currency;
 
 public class CurrencyService {
 
-    private CurrencyProvider currencyProvider;
+    private CurrencyServiceProvider currencyServiceProvider;
 
-    public CurrencyService(CurrencyProvider currencyProvider) {
-        this.currencyProvider = currencyProvider;
+    public CurrencyService(CurrencyServiceProvider currencyServiceProvider) {
+        this.currencyServiceProvider = currencyServiceProvider;
     }
 
     public double convertAmount(double amount, Currency from, Currency to) {
-        return amount * currencyProvider.getRate(from, to);
+        return amount * currencyServiceProvider.getRate(from, to);
     }
 
 }

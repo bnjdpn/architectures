@@ -1,7 +1,7 @@
 package fr.xebia.architectures.hexagonal.domain.exception;
 
-import fr.xebia.architectures.hexagonal.domain.Account;
-import fr.xebia.architectures.hexagonal.domain.Operation;
+import fr.xebia.architectures.hexagonal.domain.account.Account;
+import fr.xebia.architectures.hexagonal.domain.operation.Operation;
 
 public class UnauthorizedOperationException extends RuntimeException {
 

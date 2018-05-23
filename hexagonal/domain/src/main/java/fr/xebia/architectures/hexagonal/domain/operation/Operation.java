@@ -1,4 +1,4 @@
-package fr.xebia.architectures.hexagonal.domain;
+package fr.xebia.architectures.hexagonal.domain.operation;
 
 import java.time.Instant;
 import java.util.Currency;
@@ -56,41 +56,41 @@ public class Operation {
         return Objects.hash(date, label, amount, currency, operationType);
     }
 
-    public static final class OperationBuilder {
+    public static final class Builder {
         private Instant date = Instant.now();
         private String label;
         private double amount;
         private Currency currency = Currency.getInstance(Locale.getDefault());
         private OperationType operationType;
 
-        private OperationBuilder() {
+        private Builder() {
         }
 
-        public static OperationBuilder anOperation() {
-            return new OperationBuilder();
+        public static Builder newInstance() {
+            return new Builder();
         }
 
-        public OperationBuilder withDate(Instant date) {
+        public Builder withDate(Instant date) {
             this.date = date;
             return this;
         }
 
-        public OperationBuilder withLabel(String label) {
+        public Builder withLabel(String label) {
             this.label = label;
             return this;
         }
 
-        public OperationBuilder withAmount(double amount) {
+        public Builder withAmount(double amount) {
             this.amount = amount;
             return this;
         }
 
-        public OperationBuilder withCurrency(Currency currency) {
+        public Builder withCurrency(Currency currency) {
             this.currency = currency;
             return this;
         }
 
-        public OperationBuilder withOperationType(OperationType operationType) {
+        public Builder withOperationType(OperationType operationType) {
             this.operationType = operationType;
             return this;
         }
