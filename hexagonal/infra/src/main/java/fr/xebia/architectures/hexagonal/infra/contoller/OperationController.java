@@ -1,0 +1,48 @@
+package fr.xebia.architectures.hexagonal.infra.contoller;
+
+import fr.xebia.architectures.hexagonal.domain.provider.application.AccountOperationApplicationProvider;
+import fr.xebia.architectures.hexagonal.infra.entity.Operation;
+import fr.xebia.architectures.hexagonal.infra.repository.AccountRepository;
+import fr.xebia.architectures.hexagonal.infra.repository.OperationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.time.Instant;
+import java.util.List;
+
+@RestController
+@RequestMapping("/operation")
+public class OperationController {
+
+    private AccountRepository accountRepository;
+    private OperationRepository operationRepository;
+    private AccountOperationApplicationProvider accountOperationApplicationProvider;
+
+    @Autowired
+    public OperationController(AccountOperationApplicationProvider accountOperationApplicationProvider, AccountRepository accountRepository, OperationRepository operationRepository) {
+        this.accountOperationApplicationProvider = accountOperationApplicationProvider;
+        this.operationRepository = operationRepository;
+        this.accountRepository = accountRepository;
+    }
+
+    @PostMapping
+    public void saveOperation(@Valid Operation operation) {
+
+        if (operation.getAmount() > 0) {
+//            accountOperationApplicationProvider.makeDeposit()
+        } else {
+//            accountOperationApplicationProvider.makeWithdrawal()
+        }
+    }
+
+    @GetMapping
+    public List<Operation> findOperations(@RequestParam("accountId") String accountId,
+                                          @RequestParam("startOperationDate")
+                                                  Instant startOperationDate,
+                                          @RequestParam("endOperationDate")
+                                                  Instant endOperationDate) {
+        return operationRepository.findOperationsByAccountIdAndDateBetweenOrderByDateDesc(accountId, startOperationDate, endOperationDate);
+    }
+
+}
