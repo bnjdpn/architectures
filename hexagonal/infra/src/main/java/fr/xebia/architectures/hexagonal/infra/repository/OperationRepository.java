@@ -11,4 +11,6 @@ public interface OperationRepository extends MongoRepository<Operation, String> 
     List<Operation> findOperationsByAccountIdAndDateBetweenOrderByDateDesc(String accountId,
                                                                            Instant start,
                                                                            Instant end);
+
+    List<Operation> findOperationByAccountId(String accountId);
 }

@@ -1,5 +1,7 @@
 package fr.xebia.architectures.hexagonal.infra.entity;
 
+import fr.xebia.architectures.hexagonal.domain.operation.OperationType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Currency;
 import java.util.Locale;
+
+import static fr.xebia.architectures.hexagonal.domain.operation.Operation.Builder.newInstance;
 
 public class Operation {
 
@@ -76,5 +80,10 @@ public class Operation {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public fr.xebia.architectures.hexagonal.domain.operation.Operation toDomainOperation() {
+        return newInstance().withAmount(amount).withCurrency(currency).withDate(date).withLabel(label).withOperationType(amount > 0 ?
+                OperationType.DEPOSIT : OperationType.WITHDRAWAL).build();
     }
 }

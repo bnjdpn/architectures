@@ -1,6 +1,7 @@
 package fr.xebia.architectures.hexagonal.infra.contoller;
 
 import fr.xebia.architectures.hexagonal.domain.provider.application.AccountOperationApplicationProvider;
+import fr.xebia.architectures.hexagonal.infra.entity.Account;
 import fr.xebia.architectures.hexagonal.infra.entity.Operation;
 import fr.xebia.architectures.hexagonal.infra.repository.AccountRepository;
 import fr.xebia.architectures.hexagonal.infra.repository.OperationRepository;
@@ -29,11 +30,18 @@ public class OperationController {
     @PostMapping
     public void saveOperation(@Valid Operation operation) {
 
+        Account account = accountRepository.findById(operation.getAccountId()).orElseThrow(() -> new UnsupportedOperationException("Account not found"));
+        fr.xebia.architectures.hexagonal.domain.account.Account domainAccount = account.toDomainAccount(operationRepository.findOperationByAccountId(account.getId()));
+
+        fr.xebia.architectures.hexagonal.domain.account.Account domainAccountUpdated;
         if (operation.getAmount() > 0) {
-//            accountOperationApplicationProvider.makeDeposit()
+            domainAccountUpdated = accountOperationApplicationProvider.makeDeposit(domainAccount, operation.getLabel(), operation.getAmount(), operation.getCurrency());
         } else {
-//            accountOperationApplicationProvider.makeWithdrawal()
+            domainAccountUpdated = accountOperationApplicationProvider.makeWithdrawal(domainAccount, operation.getLabel(), operation.getAmount(), operation.getCurrency());
         }
+
+        accountRepository.save(Account.fromDomainAccount(domainAccountUpdated));
+        operationRepository.save(operation);
     }
 
     @GetMapping
