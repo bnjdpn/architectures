@@ -27,6 +27,15 @@ public class Account {
     @NotNull
     private Currency currency = Currency.getInstance(Locale.getDefault());
 
+    public static Account fromDomainAccount(fr.xebia.architectures.hexagonal.domain.account.Account account) {
+        return new Account()
+                .id(account.getIban())
+                .name(account.getName())
+                .amount(account.getOperations().stream().mapToDouble(fr.xebia.architectures.hexagonal.domain.operation.Operation::getAmount).sum())
+                .allowNegativeAmount(account.isAllowNegativeAmount())
+                .currency(account.getCurrency());
+    }
+
     public String getId() {
         return id;
     }
@@ -74,15 +83,6 @@ public class Account {
                 .withIban(id)
                 .withName(name)
                 .withOperations(operations.stream().map(Operation::toDomainOperation).collect(Collectors.toSet())).build();
-    }
-
-    public static Account fromDomainAccount(fr.xebia.architectures.hexagonal.domain.account.Account account) {
-        return new Account()
-                .id(account.getIban())
-                .name(account.getName())
-                .amount(account.getOperations().stream().mapToDouble(fr.xebia.architectures.hexagonal.domain.operation.Operation::getAmount).sum())
-                .allowNegativeAmount(account.isAllowNegativeAmount())
-                .currency(account.getCurrency());
     }
 
     public Account id(String id) {

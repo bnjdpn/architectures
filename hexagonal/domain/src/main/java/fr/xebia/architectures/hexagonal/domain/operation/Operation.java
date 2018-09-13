@@ -45,10 +45,10 @@ public class Operation {
             return false;
         Operation operation = (Operation) o;
         return Double.compare(operation.amount, amount) == 0
-            && Objects.equals(date, operation.date)
-            && Objects.equals(label, operation.label)
-            && Objects.equals(currency, operation.currency)
-            && operationType == operation.operationType;
+                && Objects.equals(date, operation.date)
+                && Objects.equals(label, operation.label)
+                && Objects.equals(currency, operation.currency)
+                && operationType == operation.operationType;
     }
 
     @Override
