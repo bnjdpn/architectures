@@ -3,10 +3,9 @@ package fr.xebia.architectures.layered.business.service;
 import fr.xebia.architectures.layered.business.exception.NotFoundException;
 import fr.xebia.architectures.layered.persistence.model.Account;
 import fr.xebia.architectures.layered.persistence.repository.AccountRepository;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 import java.util.List;
+import javax.inject.Inject;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
@@ -27,8 +26,7 @@ public class AccountService {
     }
 
     public Account findAccount(String id) {
-        return accountRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(Account.class, id));
+        return accountRepository.findById(id).orElseThrow(() -> new NotFoundException(Account.class, id));
     }
 
 }

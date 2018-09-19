@@ -1,9 +1,18 @@
 package fr.xebia.architectures.hexagonal.domain.account;
 
 import fr.xebia.architectures.hexagonal.domain.operation.Operation;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-import java.util.*;
-
+@Getter
+@EqualsAndHashCode
 public class Account {
 
     private String iban = UUID.randomUUID().toString();
@@ -38,23 +47,6 @@ public class Account {
 
     protected void addOperation(Operation operation) {
         operations.add(operation);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Account)) {
-            return false;
-        }
-        Account account = (Account) o;
-        return Objects.equals(iban, account.iban);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(iban);
     }
 
     public static final class Builder {

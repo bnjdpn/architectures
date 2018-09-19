@@ -5,9 +5,7 @@ import fr.xebia.architectures.hexagonal.domain.operation.Operation;
 import fr.xebia.architectures.hexagonal.domain.operation.OperationType;
 import fr.xebia.architectures.hexagonal.domain.provider.application.AccountOperationApplicationProvider;
 import fr.xebia.architectures.hexagonal.domain.service.CurrencyService;
-
 import java.util.Currency;
-
 import static fr.xebia.architectures.hexagonal.domain.operation.OperationType.DEPOSIT;
 import static fr.xebia.architectures.hexagonal.domain.operation.OperationType.WITHDRAWAL;
 
@@ -30,11 +28,7 @@ public class AccountOperationApplicationProviderImpl implements AccountOperation
     }
 
     private Operation buildOperation(OperationType operationType, String label, double amount, Currency currency) {
-        return Operation.Builder.newInstance()
-                .withOperationType(operationType)
-                .withLabel(label)
-                .withAmount(amount)
-                .withCurrency(currency)
+        return Operation.Builder.newInstance().withOperationType(operationType).withLabel(label).withAmount(amount).withCurrency(currency)
                 .build();
     }
 
@@ -69,10 +63,8 @@ public class AccountOperationApplicationProviderImpl implements AccountOperation
 
         double currentAmount = getAmount(account, operation.getCurrency());
 
-        double
-                amountAfterWithdrawal =
-                currentAmount - currencyService
-                        .convertAmount(operation.getAmount(), operation.getCurrency(), operation.getCurrency());
+        double amountAfterWithdrawal =
+                currentAmount - currencyService.convertAmount(operation.getAmount(), operation.getCurrency(), operation.getCurrency());
 
         return account.isAllowNegativeAmount() || amountAfterWithdrawal >= 0;
     }
@@ -80,10 +72,7 @@ public class AccountOperationApplicationProviderImpl implements AccountOperation
     private double getAmount(Account account, Currency currency) {
         return account.getOperations().stream().mapToDouble(operation -> {
 
-            double
-                    amount =
-                    currencyService
-                            .convertAmount(operation.getAmount(), operation.getCurrency(), currency);
+            double amount = currencyService.convertAmount(operation.getAmount(), operation.getCurrency(), currency);
 
             if (WITHDRAWAL.equals(operation.getOperationType())) {
                 amount *= -1;

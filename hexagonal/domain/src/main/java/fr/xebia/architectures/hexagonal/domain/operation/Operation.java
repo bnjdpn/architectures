@@ -3,8 +3,11 @@ package fr.xebia.architectures.hexagonal.domain.operation;
 import java.time.Instant;
 import java.util.Currency;
 import java.util.Locale;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
+@EqualsAndHashCode
 public class Operation {
 
     private Instant date = Instant.now();
@@ -16,45 +19,6 @@ public class Operation {
     private Currency currency = Currency.getInstance(Locale.getDefault());
 
     private OperationType operationType;
-
-    public Instant getDate() {
-        return date;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public OperationType getOperationType() {
-        return operationType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Operation))
-            return false;
-        Operation operation = (Operation) o;
-        return Double.compare(operation.amount, amount) == 0
-                && Objects.equals(date, operation.date)
-                && Objects.equals(label, operation.label)
-                && Objects.equals(currency, operation.currency)
-                && operationType == operation.operationType;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, label, amount, currency, operationType);
-    }
 
     public static final class Builder {
         private Instant date = Instant.now();

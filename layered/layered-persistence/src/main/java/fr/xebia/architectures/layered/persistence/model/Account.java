@@ -1,13 +1,12 @@
 package fr.xebia.architectures.layered.persistence.model;
 
-import org.springframework.data.annotation.Id;
-
+import java.util.Currency;
+import java.util.Locale;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Currency;
-import java.util.Locale;
+import org.springframework.data.annotation.Id;
 
 public class Account {
 
