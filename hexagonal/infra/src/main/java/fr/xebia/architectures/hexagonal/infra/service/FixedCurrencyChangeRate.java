@@ -1,9 +1,9 @@
 package fr.xebia.architectures.hexagonal.infra.service;
 
-import fr.xebia.architectures.hexagonal.domain.provider.service.CurrencyServiceProvider;
+import fr.xebia.architectures.hexagonal.domain.currency.CurrencyChangeRate;
 import java.util.Currency;
 
-public class CurrencyServiceProviderMock implements CurrencyServiceProvider {
+public class FixedCurrencyChangeRate implements CurrencyChangeRate {
 
     @Override
     public double getRate(Currency from, Currency to) {

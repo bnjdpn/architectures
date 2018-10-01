@@ -1,8 +1,11 @@
 package fr.xebia.architectures.hexagonal.infra.contoller;
 
-import fr.xebia.architectures.hexagonal.domain.provider.application.AccountOperationApplicationProvider;
-import fr.xebia.architectures.hexagonal.infra.entity.Account;
-import fr.xebia.architectures.hexagonal.infra.entity.Operation;
+import fr.xebia.architectures.hexagonal.domain.account.Account;
+import fr.xebia.architectures.hexagonal.domain.operation.Deposit;
+import fr.xebia.architectures.hexagonal.domain.operation.Operation;
+import fr.xebia.architectures.hexagonal.domain.operation.Withdraw;
+import fr.xebia.architectures.hexagonal.infra.entity.MongoAccount;
+import fr.xebia.architectures.hexagonal.infra.entity.MongoOperation;
 import fr.xebia.architectures.hexagonal.infra.repository.AccountRepository;
 import fr.xebia.architectures.hexagonal.infra.repository.OperationRepository;
 import java.time.Instant;
@@ -19,43 +22,52 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/operation")
 public class OperationController {
 
+    private Deposit deposit;
+    private Withdraw withdraw;
+
     private AccountRepository accountRepository;
     private OperationRepository operationRepository;
-    private AccountOperationApplicationProvider accountOperationApplicationProvider;
 
     @Autowired
-    public OperationController(AccountOperationApplicationProvider accountOperationApplicationProvider, AccountRepository accountRepository,
+    public OperationController(Deposit deposit, Withdraw withdraw, AccountRepository accountRepository,
                                OperationRepository operationRepository) {
-        this.accountOperationApplicationProvider = accountOperationApplicationProvider;
+        this.deposit = deposit;
+        this.withdraw = withdraw;
         this.operationRepository = operationRepository;
         this.accountRepository = accountRepository;
     }
 
     @PostMapping
-    public void saveOperation(@Valid Operation operation) {
+    public void saveOperation(@Valid MongoOperation mongoOperation) {
 
-        Account account =
-                accountRepository.findById(operation.accountId()).orElseThrow(() -> new UnsupportedOperationException("Account not found"));
-        fr.xebia.architectures.hexagonal.domain.account.Account domainAccount =
-                account.toDomainAccount(operationRepository.findOperationByAccountId(account.id()));
+        MongoAccount mongoAccount = accountRepository.findById(mongoOperation.getAccountId())
+                .orElseThrow(() -> new UnsupportedOperationException("Account not found"));
 
-        fr.xebia.architectures.hexagonal.domain.account.Account domainAccountUpdated;
-        if (operation.amount() > 0) {
-            domainAccountUpdated = accountOperationApplicationProvider
-                    .makeDeposit(domainAccount, operation.label(), operation.amount(), operation.currency());
-        } else {
-            domainAccountUpdated = accountOperationApplicationProvider
-                    .makeWithdrawal(domainAccount, operation.label(), operation.amount(), operation.currency());
+        Account domainAccount = mongoAccount.to(operationRepository.findOperationByAccountId(mongoAccount.getId()));
+
+        Account accountUpdated;
+
+        switch (Operation.OperationType.getFromAmount(mongoOperation.getAmount())) {
+            case DEPOSIT:
+                accountUpdated =
+                        deposit.make(domainAccount, mongoOperation.getLabel(), mongoOperation.getAmount(), mongoOperation.getCurrency());
+                break;
+            case WITHDRAWAL:
+                accountUpdated =
+                        withdraw.make(domainAccount, mongoOperation.getLabel(), mongoOperation.getAmount(), mongoOperation.getCurrency());
+                break;
+            default:
+                throw new UnsupportedOperationException();
         }
 
-        accountRepository.save(Account.fromDomainAccount(domainAccountUpdated));
-        operationRepository.save(operation);
+        accountRepository.save(MongoAccount.from(accountUpdated));
+        operationRepository.save(mongoOperation);
     }
 
     @GetMapping
-    public List<Operation> findOperations(@RequestParam("accountId") String accountId,
-                                          @RequestParam("startOperationDate") Instant startOperationDate,
-                                          @RequestParam("endOperationDate") Instant endOperationDate) {
+    public List<MongoOperation> findOperations(@RequestParam("accountId") String accountId,
+                                               @RequestParam("startOperationDate") Instant startOperationDate,
+                                               @RequestParam("endOperationDate") Instant endOperationDate) {
         return operationRepository.findOperationsByAccountIdAndDateBetweenOrderByDateDesc(accountId, startOperationDate, endOperationDate);
     }
 

@@ -1,6 +1,6 @@
 package fr.xebia.architectures.hexagonal.infra.contoller;
 
-import fr.xebia.architectures.hexagonal.infra.entity.Account;
+import fr.xebia.architectures.hexagonal.infra.entity.MongoAccount;
 import fr.xebia.architectures.hexagonal.infra.repository.AccountRepository;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account create(@Valid Account account) {
-        return accountRepository.save(account);
+    public MongoAccount create(@Valid MongoAccount mongoAccount) {
+        return accountRepository.save(mongoAccount);
     }
 
     @GetMapping("/{id}")
-    public Account getById(@PathVariable String id) {
+    public MongoAccount getById(@PathVariable String id) {
         return accountRepository.findById(id).orElse(null);
     }
 

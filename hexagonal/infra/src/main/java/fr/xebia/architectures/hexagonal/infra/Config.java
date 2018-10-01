@@ -1,10 +1,11 @@
 package fr.xebia.architectures.hexagonal.infra;
 
-import fr.xebia.architectures.hexagonal.domain.account.AccountOperationApplicationProviderImpl;
-import fr.xebia.architectures.hexagonal.domain.provider.application.AccountOperationApplicationProvider;
-import fr.xebia.architectures.hexagonal.domain.provider.service.CurrencyServiceProvider;
-import fr.xebia.architectures.hexagonal.domain.service.CurrencyService;
-import fr.xebia.architectures.hexagonal.infra.service.CurrencyServiceProviderMock;
+import fr.xebia.architectures.hexagonal.domain.currency.CurrencyChangeRate;
+import fr.xebia.architectures.hexagonal.domain.operation.Deposit;
+import fr.xebia.architectures.hexagonal.domain.operation.MakeDeposit;
+import fr.xebia.architectures.hexagonal.domain.operation.MakeWithdraw;
+import fr.xebia.architectures.hexagonal.domain.operation.Withdraw;
+import fr.xebia.architectures.hexagonal.infra.service.FixedCurrencyChangeRate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +14,18 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
 
     @Bean
-    public CurrencyServiceProvider currencyServiceProvider() {
-        return new CurrencyServiceProviderMock();
+    public CurrencyChangeRate currencyChangeRate() {
+        return new FixedCurrencyChangeRate();
     }
 
     @Bean
-    public CurrencyService currencyService(@Autowired CurrencyServiceProvider currencyServiceProvider) {
-        return new CurrencyService(currencyServiceProvider);
+    public Deposit deposit(@Autowired CurrencyChangeRate currencyChangeRate) {
+        return new MakeDeposit(currencyChangeRate);
     }
 
     @Bean
-    public AccountOperationApplicationProvider accountOperationApplicationProvider(@Autowired CurrencyService currencyService) {
-        return new AccountOperationApplicationProviderImpl(currencyService);
+    public Withdraw withdraw(@Autowired CurrencyChangeRate currencyChangeRate) {
+        return new MakeWithdraw(currencyChangeRate);
     }
 
 }
