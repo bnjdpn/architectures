@@ -9,29 +9,40 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static fr.xebia.architectures.hexagonal.domain.operation.Operation.OperationType.DEPOSIT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class MakeDepositTest {
+public class MakeWithdrawTest {
 
-    private static final double RATE = 2;
+    private static final double RATE = 1;
 
-    private static MakeDeposit makeDeposit;
+    private static MakeWithdraw makeWithdraw;
 
     @BeforeAll
     public static void beforeAll() {
-        makeDeposit = new MakeDeposit((from, to) -> RATE);
+        makeWithdraw = new MakeWithdraw((from, to) -> RATE);
     }
 
     @Test
-    public void should_add_operation_when_deposit() {
+    public void should_add_operation_when_withdraw() {
         // Given
         Account account = an_account_with_one_deposit_of_20EUR();
 
         // When
-        Account accountUpdated = makeDeposit.make(account, "New Deposit", 10, Currency.getInstance("EUR"));
+        Account accountUpdated = makeWithdraw.make(account, "New Withdraw", 10, Currency.getInstance("EUR"));
 
         // Then
         assertThat(accountUpdated.operations).hasSize(2);
-        assertThat(accountUpdated.getAmount()).isEqualTo(40);
+        assertThat(accountUpdated.getAmount()).isEqualTo(10);
+    }
+
+    @Test
+    public void should_throw_exception_when_large_withdraw() {
+        // Given
+        Account account = an_account_with_one_deposit_of_20EUR();
+
+        // Then
+        assertThatThrownBy(() -> makeWithdraw.make(account, "Big Withdraw", 1337, Currency.getInstance("EUR")))
+                .isInstanceOf(UnauthorizedOperationException.class);
     }
 
     private Account an_account_with_one_deposit_of_20EUR() {

@@ -39,8 +39,6 @@ public class MakeWithdraw implements Withdraw {
             return true;
         }
 
-        double accountCurrentAmount = account.operations.stream().mapToDouble(o -> o.amount).sum();
-
-        return accountCurrentAmount - operation.amount >= 0;
+        return account.getAmount() - operation.amount >= 0;
     }
 }

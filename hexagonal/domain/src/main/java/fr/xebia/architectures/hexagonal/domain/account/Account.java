@@ -3,6 +3,8 @@ package fr.xebia.architectures.hexagonal.domain.account;
 import fr.xebia.architectures.hexagonal.domain.operation.Operation;
 import java.util.Currency;
 import java.util.Set;
+import static fr.xebia.architectures.hexagonal.domain.operation.Operation.OperationType.DEPOSIT;
+import static fr.xebia.architectures.hexagonal.domain.operation.Operation.OperationType.WITHDRAWAL;
 
 public class Account {
 
@@ -21,6 +23,14 @@ public class Account {
     }
 
     public double getAmount() {
-        return operations.stream().mapToDouble(o -> o.amount).sum();
+        return operations.stream().mapToDouble(operation -> {
+            if (DEPOSIT.equals(operation.operationType)) {
+                return operation.amount;
+            } else if (WITHDRAWAL.equals(operation.operationType)) {
+                return -operation.amount;
+            } else {
+                return 0;
+            }
+        }).sum();
     }
 }
