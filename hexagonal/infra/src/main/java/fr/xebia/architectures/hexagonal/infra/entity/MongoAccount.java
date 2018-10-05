@@ -1,12 +1,13 @@
 package fr.xebia.architectures.hexagonal.infra.entity;
 
 import fr.xebia.architectures.hexagonal.domain.account.Account;
+import org.springframework.data.annotation.Id;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import org.springframework.data.annotation.Id;
 
 public class MongoAccount {
 
@@ -37,7 +38,7 @@ public class MongoAccount {
         return new MongoAccount(account.iban, account.name, account.currency, account.allowNegativeAmount, account.getAmount());
     }
 
-    public Account to(List<MongoOperation> operations) {
+    public Account toAccount(List<MongoOperation> operations) {
         return new Account(id, name, allowNegativeAmount, currency,
                            operations.stream().map(MongoOperation::to).collect(Collectors.toSet()));
     }

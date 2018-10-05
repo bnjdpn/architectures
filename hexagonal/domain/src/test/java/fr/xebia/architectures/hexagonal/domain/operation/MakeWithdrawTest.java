@@ -1,29 +1,31 @@
 package fr.xebia.architectures.hexagonal.domain.operation;
 
 import fr.xebia.architectures.hexagonal.domain.account.Account;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+
 import static fr.xebia.architectures.hexagonal.domain.operation.Operation.OperationType.DEPOSIT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class MakeWithdrawTest {
+class MakeWithdrawTest {
 
     private static final double RATE = 1;
 
     private static MakeWithdraw makeWithdraw;
 
     @BeforeAll
-    public static void beforeAll() {
+    static void beforeAll() {
         makeWithdraw = new MakeWithdraw((from, to) -> RATE);
     }
 
     @Test
-    public void should_add_operation_when_withdraw() {
+    void should_add_operation_when_withdraw() {
         // Given
         Account account = an_account_with_one_deposit_of_20EUR();
 
@@ -36,7 +38,7 @@ public class MakeWithdrawTest {
     }
 
     @Test
-    public void should_throw_exception_when_large_withdraw() {
+    void should_throw_exception_when_large_withdraw() {
         // Given
         Account account = an_account_with_one_deposit_of_20EUR();
 
@@ -48,7 +50,7 @@ public class MakeWithdrawTest {
     private Account an_account_with_one_deposit_of_20EUR() {
         Operation operation = new Operation("Operation Deposit", 20, Instant.now(), DEPOSIT);
         return new Account(UUID.randomUUID().toString(), "An Account", false, Currency.getInstance("EUR"),
-                           Collections.singleton(operation));
+                Collections.singleton(operation));
     }
 
 }

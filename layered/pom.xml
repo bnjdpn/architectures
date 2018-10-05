@@ -15,15 +15,15 @@
         <maven.compiler.source>1.8</maven.compiler.source>
 
         <javax.inject>1</javax.inject>
-        <javax.validation.api.version>2.0.0.Final</javax.validation.api.version>
         <javax.persistence.api>1.0.2</javax.persistence.api>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
         <apache.commons.lang.version>3.6</apache.commons.lang.version>
+        <javax.validation.api.version>2.0.0.Final</javax.validation.api.version>
     </properties>
 
-    <groupId>fr.xebia.architectures</groupId>
-    <artifactId>layered</artifactId>
     <packaging>pom</packaging>
+    <artifactId>layered</artifactId>
+    <groupId>fr.xebia.architectures</groupId>
 
     <modules>
         <module>layered-persistence</module>
@@ -43,7 +43,6 @@
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
