@@ -2,10 +2,12 @@ package fr.xebia.architectures.hexagonal.domain.operation;
 
 import fr.xebia.architectures.hexagonal.domain.account.Account;
 import fr.xebia.architectures.hexagonal.domain.currency.CurrencyChangeRate;
+
 import java.time.Instant;
 import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
+
 import static fr.xebia.architectures.hexagonal.domain.operation.Operation.OperationType.DEPOSIT;
 
 public class MakeDeposit implements Deposit {

@@ -1,6 +1,7 @@
 package fr.xebia.architectures.hexagonal.infra.service;
 
 import fr.xebia.architectures.hexagonal.domain.currency.CurrencyChangeRate;
+
 import java.util.Currency;
 
 public class FixedCurrencyChangeRate implements CurrencyChangeRate {

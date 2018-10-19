@@ -17,7 +17,8 @@ public class AccountManager implements AccountManagement {
 
     @Override
     public Account open(String name, Currency currency, boolean allowNegativeAmount) {
-        return accountRepository.open(new Account(iban.getNewIban(), name, allowNegativeAmount, currency, Collections.emptySet()));
+        return accountRepository
+                .open(new Account(iban.getNewIban(), name, allowNegativeAmount, currency, Collections.emptySet()));
     }
 
     @Override

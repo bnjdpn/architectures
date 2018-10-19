@@ -17,20 +17,23 @@ public class AccountRepositoryService implements AccountRepository {
     private MongoOperationRepository mongoOperationRepository;
 
     @Autowired
-    public AccountRepositoryService(MongoAccountRepository mongoAccountRepository, MongoOperationRepository mongoOperationRepository) {
+    public AccountRepositoryService(MongoAccountRepository mongoAccountRepository,
+                                    MongoOperationRepository mongoOperationRepository) {
         this.mongoAccountRepository = mongoAccountRepository;
         this.mongoOperationRepository = mongoOperationRepository;
     }
 
     @Override
     public Account open(Account account) {
-        return mongoAccountRepository.save(MongoAccount.from(account)).toAccount(mongoOperationRepository.findOperationByAccountId(account.iban));
+        return mongoAccountRepository.save(MongoAccount.from(account))
+                .toAccount(mongoOperationRepository.findOperationByAccountId(account.iban));
     }
 
     @Override
     public Account getByIban(String iban) {
         return mongoAccountRepository.findById(iban)
-                .map(mongoAccount -> mongoAccount.toAccount(mongoOperationRepository.findOperationByAccountId(mongoAccount.getId())))
+                .map(mongoAccount -> mongoAccount
+                        .toAccount(mongoOperationRepository.findOperationByAccountId(mongoAccount.getId())))
                 .orElseThrow(EntityNotFoundException::new);
     }
 }

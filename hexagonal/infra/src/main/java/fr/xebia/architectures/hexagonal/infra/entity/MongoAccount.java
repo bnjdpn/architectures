@@ -25,7 +25,8 @@ public class MongoAccount {
 
     private double amount;
 
-    public MongoAccount(@NotEmpty String id, @NotEmpty String name, @NotNull Currency currency, boolean allowNegativeAmount,
+    public MongoAccount(@NotEmpty String id, @NotEmpty String name, @NotNull Currency currency,
+                        boolean allowNegativeAmount,
                         double amount) {
         this.id = id;
         this.name = name;
@@ -35,12 +36,13 @@ public class MongoAccount {
     }
 
     public static MongoAccount from(Account account) {
-        return new MongoAccount(account.iban, account.name, account.currency, account.allowNegativeAmount, account.getAmount());
+        return new MongoAccount(account.iban, account.name, account.currency, account.allowNegativeAmount,
+                account.getAmount());
     }
 
     public Account toAccount(List<MongoOperation> operations) {
         return new Account(id, name, allowNegativeAmount, currency,
-                           operations.stream().map(MongoOperation::to).collect(Collectors.toSet()));
+                operations.stream().map(MongoOperation::to).collect(Collectors.toSet()));
     }
 
     public String getId() {

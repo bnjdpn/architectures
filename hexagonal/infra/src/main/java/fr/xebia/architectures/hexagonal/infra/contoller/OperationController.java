@@ -40,18 +40,21 @@ public class OperationController {
         MongoAccount mongoAccount = mongoAccountRepository.findById(mongoOperation.getAccountId())
                 .orElseThrow(() -> new UnsupportedOperationException("Account not found"));
 
-        Account account = mongoAccount.toAccount(mongoOperationRepository.findOperationByAccountId(mongoAccount.getId()));
+        Account account =
+                mongoAccount.toAccount(mongoOperationRepository.findOperationByAccountId(mongoAccount.getId()));
 
         Account accountUpdated;
 
         switch (Operation.OperationType.getFromAmount(mongoOperation.getAmount())) {
             case DEPOSIT:
                 accountUpdated =
-                        deposit.make(account, mongoOperation.getLabel(), mongoOperation.getAmount(), mongoOperation.getCurrency());
+                        deposit.make(account, mongoOperation.getLabel(), mongoOperation.getAmount(),
+                                mongoOperation.getCurrency());
                 break;
             case WITHDRAWAL:
                 accountUpdated =
-                        withdraw.make(account, mongoOperation.getLabel(), mongoOperation.getAmount(), mongoOperation.getCurrency());
+                        withdraw.make(account, mongoOperation.getLabel(), mongoOperation.getAmount(),
+                                mongoOperation.getCurrency());
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -65,7 +68,9 @@ public class OperationController {
     public List<MongoOperation> findOperations(@RequestParam("accountId") String accountId,
                                                @RequestParam("startOperationDate") Instant startOperationDate,
                                                @RequestParam("endOperationDate") Instant endOperationDate) {
-        return mongoOperationRepository.findOperationsByAccountIdAndDateBetweenOrderByDateDesc(accountId, startOperationDate, endOperationDate);
+        return mongoOperationRepository
+                .findOperationsByAccountIdAndDateBetweenOrderByDateDesc(accountId, startOperationDate,
+                        endOperationDate);
     }
 
 }

@@ -1,6 +1,7 @@
 package fr.xebia.architectures.hexagonal.domain.operation;
 
 import fr.xebia.architectures.hexagonal.domain.account.Account;
+
 import java.util.Currency;
 
 public interface Withdraw {

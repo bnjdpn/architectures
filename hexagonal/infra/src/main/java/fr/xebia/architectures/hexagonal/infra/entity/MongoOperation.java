@@ -2,13 +2,14 @@ package fr.xebia.architectures.hexagonal.infra.entity;
 
 import fr.xebia.architectures.hexagonal.domain.operation.Operation;
 import fr.xebia.architectures.hexagonal.domain.operation.Operation.OperationType;
-import java.time.Instant;
-import java.util.Currency;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.Currency;
 
 public class MongoOperation {
 
