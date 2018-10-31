@@ -9,11 +9,11 @@ import fr.xebia.architectures.hexagonal.infra.entity.MongoOperation;
 import fr.xebia.architectures.hexagonal.infra.repository.MongoAccountRepository;
 import fr.xebia.architectures.hexagonal.infra.repository.MongoOperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.Instant;
-import java.util.List;
 
 @RestController
 @RequestMapping("/operation")
@@ -63,14 +63,4 @@ public class OperationController {
         mongoAccountRepository.save(MongoAccount.from(accountUpdated));
         mongoOperationRepository.save(mongoOperation);
     }
-
-    @GetMapping
-    public List<MongoOperation> findOperations(@RequestParam("accountId") String accountId,
-                                               @RequestParam("startOperationDate") Instant startOperationDate,
-                                               @RequestParam("endOperationDate") Instant endOperationDate) {
-        return mongoOperationRepository
-                .findOperationsByAccountIdAndDateBetweenOrderByDateDesc(accountId, startOperationDate,
-                        endOperationDate);
-    }
-
 }
